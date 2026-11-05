@@ -86,6 +86,12 @@ class UiStrings(unittest.TestCase):
                 self.assertEqual(len(vals), len(keys), lang)
         self.assertEqual(len([k for k in ui if not k.startswith("_")]), 10)
 
+    def test_scan_survives_valueless_attributes(self) -> None:
+        # Found by fuzzing: <script src> and <link href> with no value crashed the scan.
+        s = check.Scan()
+        s.feed('<script src></script><link rel="stylesheet" href>')
+        self.assertEqual(s.external, [])
+
 
 if __name__ == "__main__":
     unittest.main()
