@@ -92,6 +92,11 @@ class UiStrings(unittest.TestCase):
         s.feed('<script src></script><link rel="stylesheet" href>')
         self.assertEqual(s.external, [])
 
+    def test_i18n_check_rejects_non_object_json(self) -> None:
+        # Found by fuzzing: valid JSON that is not an object crashed the i18n check.
+        for raw in ('1', '[]', '{"ui": 1}', '{"ui": {"en": 1}}', '{"ui": {"en": {}, "es": 2}}'):
+            self.assertFalse(check.i18n_check(raw)[1], raw)
+
 
 if __name__ == "__main__":
     unittest.main()

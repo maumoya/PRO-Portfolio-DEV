@@ -67,7 +67,7 @@ def i18n_check(raw: str) -> tuple:
         ui = json.loads(raw)["ui"]
         keys = set(ui["en"])
         return (name, all(set(v) == keys for v in ui.values()))
-    except (ValueError, KeyError):
+    except (ValueError, KeyError, TypeError, AttributeError):
         return (name, False)
 
 
